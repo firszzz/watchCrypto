@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        overflow-x: hidden;
+    }
+
+    .typingText {
+        font-family: "Source Code Pro", monospace;
+        font-size: clamp(1rem, 3vw + 1rem, 4rem);
+        font-weight: lighter;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    }
+}
