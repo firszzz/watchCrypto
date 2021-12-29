@@ -60,6 +60,7 @@
       before:bg-black
       before:z-[10]
       before:animate-underline
+      before:my-1
       ">
       <p>Welcome to my website.</p>
     </div>

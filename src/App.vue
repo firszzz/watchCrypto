@@ -30,24 +30,92 @@
 
     <MainInfo></MainInfo>
 
-    <ContactsBlock></ContactsBlock>
+    <div class="
+      flex
+      flex-col
+      h-screen
+      w-screen
+      bg-blue-200
+      items-center
+      justify-center
+      px-20
+    " id="projects">
+      <div class="min-w-full">
+        <label class="my-4">Ticker: {{ ticker }}</label>
 
-    <div class="hidden min-w-screen min-h-screen flex flex-col items-center justify-center gap-10 bg-pink-100" id="projects">
-      <div class="w-2/5 h-auto text-xl text-center">
-        <p class="text-2xl font-bold my-5">Распределение денег по Рамиту Сети</p>
-        <p>Введите вручную или выберите с помощью ползунка размер вашей заработной платы</p>
+        <input class="
+          block
+          w-1/5
+          h-10
+          pl-2
+          border-gray-300
+          text-gray-900
+          focus:outline-none
+          focus:ring-gray-500
+          focus:border-gray-500
+          sm:text-sm rounded-md
+        "
+          type="text" placeholder="Example: BTC"
+          v-model="ticker"
+          @keydown.enter = addTicker
+        >
+
+        <button
+            type="button"
+            class="my-4 inline-flex items-center py-2 px-4 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-full text-white bg-gray-600 hover:bg-gray-700 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            @click = addTicker
+        >
+          <svg
+              class="-ml-0.5 mr-2 h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              viewBox="0 0 24 24"
+              fill="#ffffff"
+          >
+            <path
+                d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7zm-1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
+            ></path>
+          </svg>
+          Add ticker
+        </button>
+
+        <div class="
+          mt-5
+          grid
+          grid-cols-1
+          gap-5
+          sm:grid-cols-3
+        ">
+          <div class="
+            bg-white
+            overflow-hidden
+            shadow
+            rounded-lg
+            border-purple-800
+            border-solid
+            cursor-pointer
+            py-5
+          "
+            v-for="t in tickers"
+            :key="t.name"
+          >
+            <div class="px-4 py-5 sm:p-6 text-center">
+              <dt class="text-sm font-medium text-gray-500 truncate">
+                {{ t.name }} - USD
+              </dt>
+              <dd class="mt-1 text-3xl text-gray-900">
+                {{ t.price }}
+              </dd>
+            </div>
+          </div>
+        </div>
       </div>
-      <input class="w-1/5" type="range" v-model="valMoney" min="5000" max="300000" step="2500">
-      <input class="text-center bg-pink-100 text-3xl border-b-2 border-black outline-none" type="number" v-model="valMoney">
-      <div class="flex gap-x-40">
-        <CalcBlock nameTag="Обязательные платежи" v-bind:money="oblPays"></CalcBlock>
-        <CalcBlock nameTag="Инвестиции" v-bind:money="invest"></CalcBlock>
-      </div>
-      <div class="flex gap-x-40">
-        <CalcBlock nameTag="Сбережения" v-bind:money="saving"></CalcBlock>
-        <CalcBlock nameTag="Свободные деньги" v-bind:money="free"></CalcBlock>
-      </div>
+
+      <CryptoBlock></CryptoBlock>
     </div>
+
+    <ContactsBlock></ContactsBlock>
 
   </div>
 </template>
@@ -55,31 +123,45 @@
 <script>
   import MainInfo from "./components/MainInfo";
   import ContactsBlock from "./components/ContactsBlock";
-  import CalcBlock from "./components/CalcBlock"
+  import CryptoBlock from "./components/CryptoBlock"
 
   export default {
     name: 'App',
     components: {
       ContactsBlock,
       MainInfo,
-      CalcBlock
+      CryptoBlock
     },
     data() {
       return {
-        valMoney: 0,
-        oblPays: 0,
-        invest: 0,
-        saving: 0,
-        free: 0
+        ticker: "",
+        tickers: []
+      }
+    },
+    created() {
+      const tickersData = localStorage.getItem("crypto-list");
+
+      if (tickersData) {
+        this.tickers = JSON.parse(tickersData);
+      }
+    },
+    methods: {
+      addTicker() {
+        const currentTicker = {
+          name: this.ticker,
+          price: "-"
+        };
+
+        this.tickers = [...this.tickers, currentTicker];
+
+        this.ticker = "";
+        console.log(this.tickers);
       }
     },
     watch: {
-      valMoney: function() {
-        this.oblPays = this.valMoney * 0.25;
-        this.invest = this.valMoney * 0.1;
-        this.saving = this.valMoney * 0.15;
-        this.free = this.valMoney * 0.5;
-      }
+      tickers: function() {
+        localStorage.setItem("crypto-list", JSON.stringify(this.tickers));
+      },
     }
   }
 </script>

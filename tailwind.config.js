@@ -4,8 +4,7 @@ module.exports = {
       './src/App.vue',
       './src/components/ContactsBlock.vue',
       './src/components/MainInfo.vue',
-      './src/components/ProjectBlock.vue',
-      './src/components/CalcBlock.vue'
+      './src/components/CryptoBlock.vue'
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
