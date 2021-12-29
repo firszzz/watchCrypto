@@ -8,7 +8,9 @@
     items-center
     text-center
     bg-purple-400
-    gap-16"
+    sm:gap-16
+    gap-10
+    "
 
     id="mainInfo">
 
@@ -18,25 +20,28 @@
       overflow-hidden
       block
       z-10
+      sm:font-light
+      font-bold
+      sm:animate-none
+      animate-fadeInUpMob
 
-      before:absolute before:inset-0
-      before:z-[10]
-      before:block
-      before:w-full
-      before:h-full
-      before:bg-purple-400
-      before:animate-typing
+      sm:before:absolute before:inset-0
+      sm:before:z-[10]
+      sm:before:block
+      sm:before:w-full
+      sm:before:h-full
+      sm:before:bg-purple-400
+      sm:before:animate-typing
 
-      after:absolute after:inset-0
-      after:w-1
-      after:z-[11]
-      after:bg-black
-      after:animate-typing
+      sm:after:absolute after:inset-0
+      sm:after:w-1
+      sm:after:z-[11]
+      sm:after:bg-black
+      sm:after:animate-typing
       ">
       <p class="typingText">
         Hello, my name is Andrey.
-
-        </p>
+      </p>
     </div>
     <div class="
       mx-auto
@@ -45,12 +50,14 @@
       relative
       block
       z-10
-      text-4xl
+      sm:text-4xl
+      text-2xl
       font-light
       typingText
       opacity-0
       translate-y-12
-      animate-fadeInUp
+      sm:animate-fadeInUp
+      animate-fadeInUpMob
 
       before:inset-y-full
       before:inset-x-0
@@ -59,7 +66,8 @@
       before:h-0.5
       before:bg-black
       before:z-[10]
-      before:animate-underline
+      sm:before:animate-underline
+      before:animate-underlineMob
       before:my-1
       ">
       <p>Welcome to my website.</p>
@@ -68,7 +76,8 @@
     <img class="mx-auto
       w-0
       rounded-lg
-      animate-showImg
+      sm:animate-showImg
+      animate-showImgMob
     "
       src="https://avatars.githubusercontent.com/u/87869207?v=4"
     >
