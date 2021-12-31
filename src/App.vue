@@ -5,7 +5,7 @@
       px-10
       py-5
       bg-purple-400
-      absolute
+      relative
       w-screen
     ">
       <nav class="
@@ -25,7 +25,7 @@
         <ul class="flex gap-10 sm:gap-20 sm:text-xl text-xs sm:font-normal font-bold text-white">
           <li><a class="hover:underline" href="#mainInfo">About Me</a></li>
           <li><a class="hover:underline" href="#projects">Projects</a></li>
-          <li><a class="hover:underline" href="#">Contacts</a></li>
+          <li><a class="hover:underline" href="#contacts">Contacts</a></li>
         </ul>
       </nav>
     </header>
@@ -43,9 +43,9 @@
       px-20
       py-10
     " id="projects">
-      <h1 class="mb-10 text-4xl font-bold text-center">Here you can track your cryptocurrency</h1>
+      <h1 class="mb-10 text-4xl typingText font-bold text-center">Here you can track your cryptocurrency</h1>
       <div class="min-w-full flex flex-col items-center">
-        <label class="my-4">Ticker: {{ ticker }}</label>
+        <label class="my-4 typingText text-lg font-bold">Ticker: {{ ticker }}</label>
 
         <input class="
           block
@@ -60,6 +60,8 @@
           sm:w-1/5
           sm:text-sm
           rounded-md
+          font-medium
+          truncate
         "
           type="text" placeholder="Example: BTC"
           v-model="ticker"
@@ -93,14 +95,17 @@
         </div>
 
         <div class="flex-row mx-2 mt-5">
-          <span>Filter: </span><input v-model="filter" class="
+          <span class="text-lg font-bold typingText">Filter: </span><input v-model="filter" class="
           pl-2
           border-gray-300
           text-gray-900
           focus:outline-none
           focus:ring-gray-500
           focus:border-gray-500
-          rounded-md"
+          rounded-md
+          font-medium
+          truncate
+          "
           />
         </div>
 
@@ -175,6 +180,20 @@
 
     <ContactsBlock></ContactsBlock>
 
+    <footer class="
+      flex
+      flex-col
+      items-center
+      gap-10
+      px-10
+      py-5
+      bg-gray-800
+      text-white
+      relative
+      w-screen">
+      <div class="text-center text-lg flex">Copyright&nbsp;<div class="animate-spin">©</div>&nbsp;2021</div>
+      <p class="text-center text-xs italic">Все права не защищены</p>
+    </footer>
   </div>
 </template>
 
@@ -218,15 +237,17 @@
     },
     methods: {
       addTicker() {
-        const currentTicker = {
-          name: this.ticker.toUpperCase(),
-          price: "-"
-        };
+        if (this.ticker) {
+          const currentTicker = {
+            name: this.ticker.toUpperCase(),
+            price: "-"
+          };
 
-        this.tickers = [...this.tickers, currentTicker];
+          this.tickers = [...this.tickers, currentTicker];
 
-        this.ticker = "";
-        this.filter = "";
+          this.ticker = "";
+          this.filter = "";
+        }
       },
       deleteTicker(targetTicker) {
         this.tickers = this.tickers.filter(t => t !== targetTicker);
@@ -252,7 +273,7 @@
       },
 
       filteredTickers() {
-        return this.tickers.filter(ticker => ticker.name.includes(this.filter.toUpperCase()));
+        return this.tickers.filter(ticker => ticker.name.startsWith(this.filter.toUpperCase()));
       },
 
       paginatedTickers() {
@@ -264,7 +285,12 @@
       },
 
       pages() {
-        return Math.ceil(this.tickers.filter(ticker => ticker.name.includes(this.filter.toUpperCase())).length / 3);
+        if (Math.ceil(this.tickers.filter(ticker => ticker.name.includes(this.filter.toUpperCase())).length / 3) === 0) {
+          return 1;
+        }
+        else {
+          return Math.ceil(this.tickers.filter(ticker => ticker.name.includes(this.filter.toUpperCase())).length / 3);
+        }
       },
 
       pageStateOptions() {
@@ -288,6 +314,7 @@
       filter: function() {
         this.page = 1;
         this.pages = Math.ceil(this.tickers.length / 3);
+        this.filter = this.filter.toUpperCase();
       },
 
       pageStateOptions: function(value) {
@@ -298,6 +325,9 @@
         );
       },
 
+      ticker: function() {
+        this.ticker = this.ticker.toUpperCase();
+      }
     }
   }
 </script>

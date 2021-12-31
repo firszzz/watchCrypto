@@ -4,7 +4,7 @@
     min-h-screen
     grid
     place-content-center
-    justify-center
+    pb-32
     items-center
     text-center
     bg-purple-400
