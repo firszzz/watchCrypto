@@ -1,7 +1,6 @@
 <template>
   <div class="
     w-screen
-    hidden
     min-h-screen
     grid
     place-content-center

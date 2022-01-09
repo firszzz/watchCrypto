@@ -248,7 +248,7 @@
       }
     },
     created() {
-      fetch("https://min-api.cryptocompare.com/data/all/coinlist?summary=true")
+      fetch("https://min-api.cryptocompare.com/data/all/coinlist")
           .then(response => {
             return response.json();
           })
