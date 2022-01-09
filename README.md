@@ -1,4 +1,4 @@
-# net1
+# Watch Crypto Price
 
 ## Project setup
 ```
