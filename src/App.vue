@@ -57,7 +57,8 @@
           focus:outline-none
           focus:ring-gray-500
           focus:border-gray-500
-          sm:w-1/5
+          sm:w-2/5
+          lg:w-3/12
           sm:text-sm
           rounded-md
           font-medium
@@ -67,6 +68,10 @@
           v-model="ticker"
           @keydown.enter = addTicker
         >
+
+        <label class="mt-2 text-red-500 font-medium" v-if="isHasTicker">
+          This ticker has already been added
+        </label>
 
         <button
             type="button"
@@ -113,11 +118,13 @@
           mt-5
           grid
           grid-cols-1
-          gap-5
-          sm:grid-cols-3
+          gap-10
+          md:grid-cols-3
         ">
           <div class="
             w-60
+            md:w-52
+            lg:w-60
             bg-white
             overflow-hidden
             shadow
@@ -133,7 +140,7 @@
               <dt class="text-sm font-medium text-gray-500 truncate">
                 {{ t.name }} - USD
               </dt>
-              <dd class="mt-1 text-3xl text-gray-900">
+              <dd class="mt-1 text-3xl text-gray-900 truncate">
                 {{ t.price }}
               </dd>
             </div>
@@ -216,7 +223,8 @@
         ticker: "",
         tickers: [],
         page: 1,
-        filter: ""
+        filter: "",
+        isHasTicker: false
       }
     },
     created() {
@@ -245,7 +253,11 @@
     },
     methods: {
       addTicker() {
-        if (this.ticker) {
+        if (this.tickers.find(t => t.name === this.ticker)) {
+          this.isHasTicker = true;
+        }
+
+        if (this.ticker && !this.isHasTicker) {
           const currentTicker = {
             name: this.ticker.toUpperCase(),
             price: "-"
@@ -263,11 +275,8 @@
       },
 
       updateTicker(tickerName, price) {
-        this.tickers
-            .filter(t => t.name === tickerName)
-            .forEach(t => {
-              t.price = price;
-            });
+        const tickerToUpdate = this.tickers.find(t => t.name === tickerName);
+        tickerToUpdate.price = price;
       },
 
       deleteTicker(targetTicker) {
@@ -351,6 +360,7 @@
 
       ticker: function() {
         this.ticker = this.ticker.toUpperCase();
+        this.isHasTicker = false;
       }
     }
   }
