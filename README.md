@@ -1,5 +1,7 @@
 # Watch Crypto Price
 
+### Project on vue, w/ tailwind, price requests are implemented using websockets
+
 ## Project setup
 ```
 npm install
