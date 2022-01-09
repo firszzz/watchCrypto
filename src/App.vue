@@ -201,13 +201,15 @@
   import MainInfo from "./components/MainInfo";
   import ContactsBlock from "./components/ContactsBlock";
   import CryptoBlock from "./components/CryptoBlock"
+  import { subscribeToTicker, unsubscribeFromTicker } from "./api";
 
   export default {
     name: 'App',
     components: {
       ContactsBlock,
       MainInfo,
-      CryptoBlock
+      CryptoBlock,
+
     },
     data() {
       return {
@@ -221,19 +223,25 @@
       const windowData = Object.fromEntries(
           new URL(window.location).searchParams.entries()
       );
+
       const tickersData = localStorage.getItem("crypto-list");
 
       if (tickersData) {
         this.tickers = JSON.parse(tickersData);
+        this.tickers.forEach(ticker => {
+          subscribeToTicker(ticker.name, newPrice =>
+              this.updateTicker(ticker.name, newPrice)
+          );
+        });
       }
 
-      if (windowData.page){
-        this.page = windowData.page;
-      }
+      const VALID_KEYS = ["filter", "page"];
 
-      if (windowData.filter) {
-        this.filter = windowData.filter;
-      }
+      VALID_KEYS.forEach(key => {
+        if (windowData[key]) {
+          this[key] = windowData[key];
+        }
+      });
     },
     methods: {
       addTicker() {
@@ -247,16 +255,32 @@
 
           this.ticker = "";
           this.filter = "";
+
+          subscribeToTicker(currentTicker.name, newPrice =>
+              this.updateTicker(currentTicker.name, newPrice)
+          );
         }
       },
+
+      updateTicker(tickerName, price) {
+        this.tickers
+            .filter(t => t.name === tickerName)
+            .forEach(t => {
+              t.price = price;
+            });
+      },
+
       deleteTicker(targetTicker) {
         this.tickers = this.tickers.filter(t => t !== targetTicker);
+        unsubscribeFromTicker(targetTicker.name);
       },
+
       tryLast() {
         if (this.page > 1) {
           this.page--;
         }
       },
+
       tryNext() {
         if (this.hasNextPage) {
           this.page++;
