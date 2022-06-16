@@ -2,25 +2,12 @@
 
 ### Project on vue, w/ tailwind, price requests are implemented using websockets
 
-## Project setup
+## 1
 ```
-npm install
+npm install vue
 ```
 
-### Compiles and hot-reloads for development
+## 2
 ```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
